@@ -14,12 +14,11 @@ app.use('/', express.static(publicPath));
 io.on('connection', (socket) => {
 	console.log('New user connected');
 
-	socket.emit('newEmail', {
-		from: 'mike@example.com',
-		text: 'Hey, What is going on.',
-		createdAt: 123
-	});
-
+	// socket.emit('newEmail', {
+	// 	from: 'mike@example.com',
+	// 	text: 'Hey, What is going on.',
+	// 	createdAt: 123
+	// });
 	// socket.emit('newMessage', {
 	// 	form: 'Mike@example.com',
 	// 	text: 'Hey, What\' going on',
@@ -28,6 +27,11 @@ io.on('connection', (socket) => {
 
 	socket.on('createMessage', (message) => {
 		console.log('Create Message', message);
+		io.emit('newMessage', {
+			from: message.from,
+			text: message.text,
+			createdAt: new Date().getTime()
+		})
 	});
 
 	// socket.on('createEmail', (newEmail) => {
