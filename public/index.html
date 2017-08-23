@@ -9,5 +9,19 @@
 </head>
 <body>
   <p>Hello World!</p>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+	  let socket = io();
+
+	  socket.on('connect', () => {
+	  	console.log('Connected to Server!');
+	  });
+
+	  socket.on('disconnect', () => {
+	  	console.log('Disconnected from server');
+	  });
+
+  </script>
 </body>
 </html>
