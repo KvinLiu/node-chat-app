@@ -38,8 +38,8 @@ io.on('connection', (socket) => {
 		// 	text: message.text,
 		// 	createdAt: new Date().getTime()
 		// })
-		socket.broadcast.emit('newMessage', generateMessage(message.from, message.text));
-		callback('This is from the server.');
+		io.emit('newMessage', generateMessage(message.from, message.text));
+		callback();
 	});
 
 	socket.on('createLocationMessage', (coords) => {
