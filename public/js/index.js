@@ -16,6 +16,12 @@ socket.on('disconnect', function () {
 	console.log('Disconnected from server');
 });
 
+socket.emit('createMessage', {
+	from: 'Frank',
+	text: 'Hi'
+}, function (data) {
+	console.log('Got it', data);
+});
 // socket.on('newEmail', function (email) {
 // 	console.log('New email', email);
 // });
