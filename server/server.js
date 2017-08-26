@@ -27,15 +27,23 @@ io.on('connection', (socket) => {
 	// 	createdAt: 221133
 	// });
 
-	// socket.emit from Admin text Welcome to the chat app
-	socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
-	// socket.broadcast.emit from Admin text New user joined
-	socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User joined'));
-
 	socket.on('join', (params, callback) => {
 		if (!isRealString(params.name) || !isRealString(params.room)) {
 			callback('Name and room name are required.')
 		}
+
+		socket.join(params.room);
+		//socket.leave('The Office Fans');
+
+		// io.emit -> io.to('The Office Fans').emit
+		// socket.broadcast.emit -> socket.broadcast.to('The Office Fans').emit
+		// socket.emit
+
+		// socket.emit from Admin text Welcome to the chat app
+		socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+		// socket.broadcast.emit from Admin text New user joined
+		socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
+
 		callback();
 	});
 
@@ -46,12 +54,12 @@ io.on('connection', (socket) => {
 		// 	text: message.text,
 		// 	createdAt: new Date().getTime()
 		// })
-		io.emit('newMessage', generateMessage(message.from, message.text));
+		io.to(params.room).emit('newMessage', generateMessage(message.from, message.text));
 		callback();
 	});
 
 	socket.on('createLocationMessage', (coords) => {
-		io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+		io.to(params.room).emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
 	});
 
 	// socket.on('createEmail', (newEmail) => {
